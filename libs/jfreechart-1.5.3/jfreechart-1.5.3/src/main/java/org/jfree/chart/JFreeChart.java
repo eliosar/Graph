@@ -118,7 +118,7 @@ import org.jfree.data.Range;
  * {@link org.jfree.data.general.Dataset} (the plot in turn manages a
  * domain axis and a range axis).
  * <P>
- * You should use a {@link ChartPanel} to display a chart in a eborho.kmGraph.GUI.
+ * You should use a {@link ChartPanel} to display a chart in a eborho.kmGraph.InputGui.
  * <P>
  * The {@link ChartFactory} class contains static methods for creating
  * 'ready-made' charts.

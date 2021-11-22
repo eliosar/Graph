@@ -1,44 +1,58 @@
 package eborho.kmGraph;
 
+import org.jfree.data.xy.XYDataItem;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Main extends GUI {
-
-    private static Graph StGraph;
+public class Main extends InputGui {
 
     public static void main(String args[]) {
-        GUI gui = new GUI();
-
-        MyActionListener al = new MyActionListener(gui);
-
-        gui.setActionListener(al);
+        new Main().start();
     }
 
-    static class MyActionListener implements ActionListener {
-        private final GUI gui;
+    private void start() {
+        InputGui inputGui = new InputGui();
+        GraphGui graphGui = new GraphGui( new Point(999, 280));
 
-        public MyActionListener(GUI gui) {
-            this.gui = gui;
+        InputGuiActionListener al = new InputGuiActionListener(inputGui, graphGui);
+        inputGui.setActionListener(al);
+
+        inputGui.show();
+        graphGui.show();
+    }
+
+    //TODO maybe extract to separate class
+    private static class InputGuiActionListener implements ActionListener {
+
+        private final InputGui inputGui;
+        private final GraphGui stGraph;
+
+        public InputGuiActionListener(InputGui inputGui, GraphGui stGraph) {
+            this.inputGui = inputGui;
+            this.stGraph = stGraph;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(StGraph != null) {
-                StGraph.frame.dispose();
+
+            if(inputGui.isExitAction(e)){
+                inputGui.close();
+                stGraph.close();
+            }
+            if(inputGui.isAddAction(e)){
+
+                if(inputGui.hasValidDataset()){
+                    inputGui.markInputValid();
+                    XYDataItem dataItem = inputGui.getDataItem();
+                    stGraph.addDataset(dataItem);
+                }else{
+                    inputGui.markInputInvalid();
+                }
+
             }
 
-            if(e.getSource() == gui.addButton){
-                StGraph = new Graph(gui.allkm, gui.alltimes, new Point(999, 280));
-                gui.frame.setVisible(true);
-            }
-            if(e.getSource() == gui.finishButton){
-                gui.frame.dispose();
-
-                new Graph(gui.allkm, gui.alltimes, new Point(986, 280));
-                new VtGraph(gui.allspeed, gui.alltimes, new Point(333, 280));
-            }
         }
     }
 }

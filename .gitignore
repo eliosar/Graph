@@ -1,2 +1,9 @@
 # Project exclude paths
 /out/
+
+#the build directory is created durng build and is NOT part of the source control
+/build/
+
+#wie do not store the idea-settings
+*.iml
+.idea/

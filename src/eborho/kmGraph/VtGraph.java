@@ -39,7 +39,7 @@ public class VtGraph {
     private JPanel createChartPanel(){
         XYDataset dataset = createDataset();
 
-        chart = ChartFactory.createXYLineChart("vt eborho.kmGraph.Graph", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
+        chart = ChartFactory.createXYLineChart("vt eborho.kmGraph.GraphGui", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
