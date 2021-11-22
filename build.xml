@@ -1,5 +1,9 @@
 <project>
 
+    <path id="classpath">
+        <fileset dir="libs"/>
+    </path>
+
     <target name="clean">
         <delete dir="build"/>
     </target>
@@ -16,6 +20,7 @@
     <target name="jar">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/Graph.jar" basedir="build/classes">
+            <zipgroupfileset includes="*.jar" dir="libs"/>
             <manifest>
                 <attribute name="Main-Class" value="eborho.kmGraph.Main"/>
             </manifest>
