@@ -6,42 +6,40 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
-public class Graph{
-    private ArrayList<Float> Allkm;
-    private ArrayList<Float> Alltimes;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
-    private int width = 640;
-    private int height = 480;
+public class GraphGui {
 
-    private JFreeChart chart;
-    public JFrame frame;
+    private static final int WIDTH = 640;
+    private static final int HEIGHT = 480;
 
-    public Graph(ArrayList<Float> allkm, ArrayList<Float> alltimes, Point location){
-        Allkm = allkm;
-        Alltimes = alltimes;
+    private final JFrame frame;
+    private final XYSeries line = new XYSeries("line-chart", false);
+
+    public GraphGui( Point location) {
 
         frame = new JFrame();
         JPanel chartPanel = createChartPanel();
         frame.add(chartPanel, BorderLayout.CENTER);
 
-        frame.setSize(width, height);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(WIDTH, HEIGHT);
+        //frame will be close ONLY ON "button exit" from inputGui is pressed
+        frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         frame.setLocation(location);
-        frame.setVisible(true);
     }
 
-    private JPanel createChartPanel(){
+    private JPanel createChartPanel() {
         XYDataset dataset = createDataset();
 
-        chart = ChartFactory.createXYLineChart("st eborho.kmGraph.Graph", "distance [km]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
+        JFreeChart chart = ChartFactory.createXYLineChart("st eborho.kmGraph.GraphGui", "distance [km]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
@@ -63,18 +61,22 @@ public class Graph{
         return new ChartPanel(chart);
     }
 
-    private XYDataset createDataset(){
+    private XYDataset createDataset() {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries Line = new XYSeries("line-chart", false);
-
-        Line.add(0, 0);
-
-        for (int i = 0; i < Allkm.size(); i++) {
-            Line.add(Allkm.get(i), Alltimes.get((i)));
-        }
-
-        dataset.addSeries(Line);
-
+        line.add(0,0);
+        dataset.addSeries(line);
         return dataset;
+    }
+
+    public void show() {
+        frame.setVisible(true);
+    }
+
+    public void close() {
+        frame.dispose();
+    }
+
+    public void addDataset(XYDataItem dataItem) {
+        line.add(dataItem);
     }
 }

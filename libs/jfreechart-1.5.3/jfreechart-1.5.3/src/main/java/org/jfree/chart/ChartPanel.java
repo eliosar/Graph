@@ -127,7 +127,7 @@ import org.jfree.chart.util.ResourceBundleWrapper;
 import org.jfree.chart.util.SerialUtils;
 
 /**
- * A Swing eborho.kmGraph.GUI component for displaying a {@link JFreeChart} object.
+ * A Swing eborho.kmGraph.InputGui component for displaying a {@link JFreeChart} object.
  * <P>
  * The panel registers with the chart to receive notification of changes to any
  * component of the chart.  The chart is redrawn automatically whenever this
