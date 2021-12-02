@@ -30,7 +30,6 @@ public class VtGraph {
             Allspeed.add(datas.get(i).getX().floatValue());
             Alltimes.add(datas.get(i).getY().floatValue());
         }
-
         Alltimes.add(0f);
 
         JPanel chartPanel = createChartPanel();
@@ -50,7 +49,9 @@ public class VtGraph {
         XYPlot plot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-        renderer.setSeriesPaint(0, Color.CYAN);
+        for(int i = 0; i < dataset.getSeriesCount(); i++) {
+            renderer.setSeriesPaint(i, Color.CYAN);
+        }
 
         plot.setRenderer(renderer);
         plot.setOutlinePaint(Color.BLACK);

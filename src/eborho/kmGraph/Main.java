@@ -16,7 +16,7 @@ public class Main{
     private static ArrayList<XYDataItem> vtdatas = new ArrayList<>();
     private static ArrayList<XYDataItem> stdatas = new ArrayList<>();
 
-    public static void main() {
+    public static void main(String args[]) {
         new Main().start();
     }
 
