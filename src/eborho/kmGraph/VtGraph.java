@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -15,31 +16,34 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class VtGraph {
-    private ArrayList<Float> Allspeed;
-    private ArrayList<Float> Alltimes;
+    private ArrayList<Float> Allspeed = new ArrayList<>();
+    private ArrayList<Float> Alltimes = new ArrayList<>();
     private int width = 640;
     private int height = 480;
     private JFreeChart chart;
 
-    public VtGraph(ArrayList<Float> allspeed, ArrayList<Float> alltimes, Point location){
-        Allspeed = allspeed;
-        Alltimes = alltimes;
+    public JFrame frame = new JFrame();
+
+    public VtGraph(ArrayList<XYDataItem> datas){
+
+        for(int i = 0; i < datas.size(); i++){
+            Allspeed.add(datas.get(i).getX().floatValue());
+            Alltimes.add(datas.get(i).getY().floatValue());
+        }
+
         Alltimes.add(0f);
 
-        JFrame frame = new JFrame();
         JPanel chartPanel = createChartPanel();
         frame.add(chartPanel, BorderLayout.CENTER);
 
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocation(location);
-        frame.setVisible(true);
     }
 
     private JPanel createChartPanel(){
         XYDataset dataset = createDataset();
 
-        chart = ChartFactory.createXYLineChart("vt eborho.kmGraph.GraphGui", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
+        chart = ChartFactory.createXYLineChart("vt Graph", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
@@ -79,5 +83,17 @@ public class VtGraph {
         }
 
         return dataset;
+    }
+
+    public void setLocation(Point location){
+        if(location == null){
+            frame.setLocationRelativeTo(null);
+        }else {
+            frame.setLocation(location);
+        }
+    }
+
+    public void show(){
+        frame.setVisible(true);
     }
 }

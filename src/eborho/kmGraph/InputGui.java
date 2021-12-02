@@ -21,8 +21,7 @@ public class InputGui {
 
     public final JFrame frame = new JFrame();
 
-    public final JButton addButton = new JButton("new");
-    public final JButton finishButton = new JButton("finished");
+    public final JButton addButton = new JButton("add");
 
     public InputGui() {
         kmAmount.setBounds(X_AMOUNT, Y_KM, 80, 25);
@@ -43,29 +42,20 @@ public class InputGui {
         panel.setBackground(Color.GRAY);
 
         addButton.setBounds(30, 80, 122, 25);
-        finishButton.setBounds(30, 110, 122, 25);
 
         frame.setSize(350, 200);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         frame.add(addButton);
-        frame.add(finishButton);
         frame.add(panel);
-
-
     }
 
     void setActionListener(ActionListener al) {
         addButton.addActionListener(al);
-        finishButton.addActionListener(al);
     }
 
     protected void show() {
         frame.setVisible(true);
-    }
-
-    public boolean isExitAction(ActionEvent e) {
-        return e.getSource().equals(finishButton);
     }
 
     public boolean isAddAction(ActionEvent e) {
@@ -83,7 +73,7 @@ public class InputGui {
                 float time = Float.parseFloat(timeAmount.getText());
 
                 //valid input if
-                return km > 0 && time > 0;
+                return km >= 0 && time > 0;
             } catch (NumberFormatException e) {
                 return false;
             }
@@ -105,5 +95,9 @@ public class InputGui {
     public void markInputValid() {
         kmAmount.setBackground(Color.WHITE);
         timeAmount.setBackground(Color.WHITE);
+    }
+
+    public void Exit(){
+        frame.dispose();
     }
 }

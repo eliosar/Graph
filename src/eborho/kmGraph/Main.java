@@ -1,58 +1,94 @@
 package eborho.kmGraph;
 
 import org.jfree.data.xy.XYDataItem;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class Main extends InputGui {
+public class Main{
 
-    public static void main(String args[]) {
+    private static InputGuiActionListener al;
+    private static ArrayList<XYDataItem> vtdatas = new ArrayList<>();
+    private static ArrayList<XYDataItem> stdatas = new ArrayList<>();
+
+    public static void main() {
         new Main().start();
     }
 
     private void start() {
-        InputGui inputGui = new InputGui();
-        GraphGui graphGui = new GraphGui( new Point(999, 280));
+        GraphGui graphGui = new GraphGui();
+        graphGui.setLocation(null);
 
-        InputGuiActionListener al = new InputGuiActionListener(inputGui, graphGui);
-        inputGui.setActionListener(al);
+        al = new InputGuiActionListener(graphGui);
 
-        inputGui.show();
+        graphGui.setActionListener(al);
         graphGui.show();
     }
 
     //TODO maybe extract to separate class
     private static class InputGuiActionListener implements ActionListener {
 
-        private final InputGui inputGui;
+        private InputGui inputGui = null;
         private final GraphGui stGraph;
 
-        public InputGuiActionListener(InputGui inputGui, GraphGui stGraph) {
-            this.inputGui = inputGui;
+        public InputGuiActionListener(GraphGui stGraph) {
             this.stGraph = stGraph;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if(inputGui.isExitAction(e)){
-                inputGui.close();
-                stGraph.close();
-            }
-            if(inputGui.isAddAction(e)){
-
-                if(inputGui.hasValidDataset()){
+            if(stGraph.isAddAction(e)){
+                this.inputGui = new InputGui();
+                inputGui.setActionListener(al);
+                inputGui.show();
+            }else if(inputGui.isAddAction(e)){
+                if(inputGui.hasValidDataset()) {
                     inputGui.markInputValid();
                     XYDataItem dataItem = inputGui.getDataItem();
+                    inputGui.Exit();
                     stGraph.addDataset(dataItem);
+                    stdatas.add(dataItem);
+
+                    int lastValue = stdatas.size() - 2;
+                    float time;
+                    float distance;
+
+                    if (stdatas.size() == 1) {
+                        lastValue += 1;
+                    }
+
+                    if (stdatas.size() == 1) {
+                        distance = dataItem.getY().floatValue();
+                        time = dataItem.getX().floatValue();
+                    } else {
+                        time = dataItem.getY().floatValue() - stdatas.get(lastValue).getY().floatValue();
+
+                        if (dataItem.getX().floatValue() > stdatas.get(lastValue).getX().floatValue()) {
+                            distance = dataItem.getX().floatValue() - stdatas.get(lastValue).getX().floatValue();
+                        } else {
+                            distance = -(stdatas.get(lastValue).getX().floatValue() - dataItem.getX().floatValue());
+                        }
+                    }
+
+                    vtdatas.add(new XYDataItem(distance / time, dataItem.getY()));
                 }else{
                     inputGui.markInputInvalid();
                 }
+            }else if(stGraph.isfinishAction(e)){
+                stGraph.setLocation(new Point(999, 280));
+                stGraph.closeButtons();
+                stGraph.show();
 
+                VtGraph vtGraph = new VtGraph(vtdatas);
+                vtGraph.setLocation(new Point(333, 280));
+                vtGraph.show();
             }
-
         }
     }
 }
