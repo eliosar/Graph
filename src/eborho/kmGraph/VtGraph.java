@@ -16,21 +16,21 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class VtGraph {
-    private ArrayList<Float> Allspeed = new ArrayList<>();
-    private ArrayList<Float> Alltimes = new ArrayList<>();
+    private ArrayList<XYDataItem> Alldatas = new ArrayList<>();
     private int width = 640;
     private int height = 480;
     private JFreeChart chart;
 
     public JFrame frame = new JFrame();
 
-    public VtGraph(ArrayList<XYDataItem> datas){
+    public VtGraph(ArrayList<Person> allpersons){
 
-        for(int i = 0; i < datas.size(); i++){
-            Allspeed.add(datas.get(i).getX().floatValue());
-            Alltimes.add(datas.get(i).getY().floatValue());
+        for(int i = 0; i < allpersons.size(); i++){
+            Alldatas.add(allpersons.get(i).getVtData().get(i));
+            //Alldatas.add(datas.get(i).getX().floatValue());
+            System.out.println(Alldatas.get(i));
         }
-        Alltimes.add(0f);
+        //Alltimes.add(0f);
 
         JPanel chartPanel = createChartPanel();
         frame.add(chartPanel, BorderLayout.CENTER);
@@ -69,7 +69,7 @@ public class VtGraph {
     private XYDataset createDataset(){
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        for(int i = 0; i < Allspeed.size(); i++) {
+        /*for(int i = 0; i < Allspeed.size(); i++) {
             XYSeries Line = new XYSeries(Allspeed.get(i), false);
 
             if(i == 0) {
@@ -81,7 +81,7 @@ public class VtGraph {
             Line.add(Allspeed.get(i), Alltimes.get(i));
 
             dataset.addSeries(Line);
-        }
+        }*/
 
         return dataset;
     }

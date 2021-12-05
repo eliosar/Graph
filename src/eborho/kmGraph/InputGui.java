@@ -11,11 +11,6 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class InputGui {
 
-    private static final int X_AMOUNT = 110;
-    private static final int X_TEXT = 10;
-    private static final int Y_KM = 20;
-    private static final int Y_TIME = 50;
-
     private final JTextField kmAmount = new JTextField();
     private final JTextField timeAmount = new JTextField();
 
@@ -24,13 +19,13 @@ public class InputGui {
     public final JButton addButton = new JButton("add");
 
     public InputGui() {
-        kmAmount.setBounds(X_AMOUNT, Y_KM, 80, 25);
+        kmAmount.setBounds(110, 20, 80, 25);
         JLabel kmText = new JLabel("km");
-        kmText.setBounds(X_TEXT, Y_KM, 160, 25);
+        kmText.setBounds(10, 20, 160, 25);
 
-        timeAmount.setBounds(X_AMOUNT, Y_TIME, 80, 25);
+        timeAmount.setBounds(110, 50, 80, 25);
         JLabel timeText = new JLabel("time spend (h)");
-        timeText.setBounds(X_TEXT, Y_TIME, 160, 25);
+        timeText.setBounds(10, 50, 160, 25);
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -90,11 +85,6 @@ public class InputGui {
     public void markInputInvalid() {
         kmAmount.setBackground(Color.RED);
         timeAmount.setBackground(Color.RED);
-    }
-
-    public void markInputValid() {
-        kmAmount.setBackground(Color.WHITE);
-        timeAmount.setBackground(Color.WHITE);
     }
 
     public void Exit(){

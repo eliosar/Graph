@@ -15,29 +15,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import java.util.ArrayList;
 
 public class GraphGui {
 
     private static final int WIDTH = 640;
     private static final int HEIGHT = 480;
 
+    private XYSeriesCollection dataset = new XYSeriesCollection();
+
+    private ArrayList<XYSeries> Lines = new ArrayList<>();
+
+    private ArrayList<Person> allpersons = new ArrayList<>();
+
     private final JFrame frame = new JFrame();
-    private final XYSeries line = new XYSeries("line-chart", false);
     private final JButton addButton = new JButton("add");
     private final JButton finishButton = new JButton("finish");
+    private final JButton addPersonButton = new JButton("add Person");
+    private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
     public GraphGui() {
+        Lines.add(new XYSeries("line", false));
         addButton.setBounds(10, 415, 90, 20);
         finishButton.setBounds(110, 415, 90, 20);
+        addPersonButton.setBounds( 210, 415, 100, 20);
         JPanel chartPanel = createChartPanel();
         frame.add(addButton);
         frame.add(finishButton);
+        frame.add(addPersonButton);
         frame.add(chartPanel, BorderLayout.CENTER);
 
         frame.setSize(WIDTH, HEIGHT);
-        //frame will be close ONLY ON "button exit" from inputGui is pressed
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
@@ -49,7 +57,6 @@ public class GraphGui {
         chart.getTitle().setPaint(Color.CYAN);
 
         XYPlot plot = chart.getXYPlot();
-        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
         renderer.setSeriesPaint(0, Color.CYAN);
 
@@ -67,9 +74,8 @@ public class GraphGui {
     }
 
     private XYDataset createDataset() {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        line.add(0,0);
-        dataset.addSeries(line);
+        Lines.get(Lines.size() - 1).add(0,0);
+        dataset.addSeries(Lines.get(Lines.size() - 1));
         return dataset;
     }
 
@@ -84,15 +90,24 @@ public class GraphGui {
     public void closeButtons(){
         addButton.setVisible(false);
         finishButton.setVisible(false);
+        addPersonButton.setVisible(false);
     }
 
-    public void addDataset(XYDataItem dataItem) {
-        line.add(dataItem);
+    public void addDataset(XYDataItem dataItem, int LineNumber) {
+        Lines.get(LineNumber).add(dataItem);
+    }
+
+    public void addLine(Person newPerson){
+        Lines.add(new XYSeries(newPerson.getLineNumber(), false));
+        Lines.get(Lines.size() - 1).add(0,0);
+        dataset.addSeries(Lines.get(Lines.size() - 1));
+        renderer.setSeriesPaint(newPerson.getLineNumber(), newPerson.getColor());
     }
 
     void setActionListener(ActionListener al) {
         addButton.addActionListener(al);
         finishButton.addActionListener(al);
+        addPersonButton.addActionListener(al);
     }
 
     void setLocation(Point location){
@@ -108,5 +123,12 @@ public class GraphGui {
     }
     public boolean isfinishAction(ActionEvent e) {
         return e.getSource().equals(finishButton);
+    }
+    public boolean isAddPersonAction(ActionEvent e) {
+        return e.getSource().equals(addPersonButton);
+    }
+
+    public void setPersons(ArrayList<Person> persons){
+        allpersons = persons;
     }
 }
