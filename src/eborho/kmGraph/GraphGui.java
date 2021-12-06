@@ -52,7 +52,7 @@ public class GraphGui {
     private JPanel createChartPanel() {
         XYDataset dataset = createDataset();
 
-        JFreeChart chart = ChartFactory.createXYLineChart("stGraph", "distance [km]", "time [h]", dataset, PlotOrientation.VERTICAL, false, true, true);
+        JFreeChart chart = ChartFactory.createXYLineChart("stGraph", "time [h]", "distance [km]", dataset, PlotOrientation.VERTICAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
