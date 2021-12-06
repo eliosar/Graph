@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class VtGraph {
     private ArrayList<XYDataItem> Alldatas = new ArrayList<>();
+    private ArrayList<Person> allpersons;
     private int width = 640;
     private int height = 480;
     private JFreeChart chart;
@@ -24,13 +25,13 @@ public class VtGraph {
     public JFrame frame = new JFrame();
 
     public VtGraph(ArrayList<Person> allpersons){
+        this.allpersons = allpersons;
 
         for(int i = 0; i < allpersons.size(); i++){
-            Alldatas.add(allpersons.get(i).getVtData().get(i));
-            //Alldatas.add(datas.get(i).getX().floatValue());
-            System.out.println(Alldatas.get(i));
+            for (int x = 0; x < allpersons.get(i).getVtData().size(); x++) {
+                Alldatas.add(allpersons.get(i).getVtData().get(x));
+            }
         }
-        //Alltimes.add(0f);
 
         JPanel chartPanel = createChartPanel();
         frame.add(chartPanel, BorderLayout.CENTER);
@@ -49,8 +50,12 @@ public class VtGraph {
         XYPlot plot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-        for(int i = 0; i < dataset.getSeriesCount(); i++) {
-            renderer.setSeriesPaint(i, Color.CYAN);
+        int currentSeries = 0;
+        for(int i = 0; i < allpersons.size(); i++) {
+            for (int x = 0; x < allpersons.get(i).getVtData().size(); x++) {
+                renderer.setSeriesPaint(currentSeries, allpersons.get(i).getColor());
+                currentSeries += 1;
+            }
         }
 
         plot.setRenderer(renderer);
@@ -69,19 +74,23 @@ public class VtGraph {
     private XYDataset createDataset(){
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        /*for(int i = 0; i < Allspeed.size(); i++) {
-            XYSeries Line = new XYSeries(Allspeed.get(i), false);
+        for(int i = 0; i < allpersons.size(); i++) {
 
-            if(i == 0) {
-                Line.add(Allspeed.get(i), Alltimes.get(Alltimes.size() - 1));
-            }else{
-                Line.add(Allspeed.get(i), Alltimes.get(i - 1));
+            for(int x = 0; x < allpersons.get(i).getVtData().size(); x++) {
+                XYSeries Line = new XYSeries(i + " " + x, false);
+                XYDataItem currentvtdata = allpersons.get(i).getVtData(x);
+
+                if (x == 0) {
+                    Line.add(currentvtdata.getYValue(), 0);
+                } else {
+                    Line.add(currentvtdata.getYValue(), allpersons.get(i).getVtData(x - 1).getXValue());
+                }
+
+                Line.add(currentvtdata.getYValue(), currentvtdata.getXValue());
+
+                dataset.addSeries(Line);
             }
-
-            Line.add(Allspeed.get(i), Alltimes.get(i));
-
-            dataset.addSeries(Line);
-        }*/
+        }
 
         return dataset;
     }

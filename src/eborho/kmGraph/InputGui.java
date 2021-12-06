@@ -61,14 +61,14 @@ public class InputGui {
         frame.dispose();
     }
 
-    public boolean hasValidDataset() {
+    public boolean hasValidDataset(int lastX) {
         if (!kmAmount.getText().isEmpty() && !timeAmount.getText().isEmpty()) {
             try {
                 float km = Float.parseFloat(kmAmount.getText());
                 float time = Float.parseFloat(timeAmount.getText());
 
                 //valid input if
-                return km >= 0 && time > 0;
+                return km >= 0 && time > 0 && time > lastX;
             } catch (NumberFormatException e) {
                 return false;
             }
@@ -79,7 +79,7 @@ public class InputGui {
     public XYDataItem getDataItem() {
         float km = Float.parseFloat(kmAmount.getText());
         float time = Float.parseFloat(timeAmount.getText());
-        return new XYDataItem(km, time);
+        return new XYDataItem(time, km);
     }
 
     public void markInputInvalid() {

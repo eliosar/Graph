@@ -19,6 +19,7 @@ public class Main{
         Person newPerson = new Person();
         newPerson.setColor(Color.CYAN);
         newPerson.setLineNumber(0);
+        newPerson.addStDatawithoutGraph(new XYDataItem(0, 0));
         GraphGui graphGui = new GraphGui();
         graphGui.setLocation(null);
 
@@ -51,7 +52,7 @@ public class Main{
                 inputGui.show();
             }else {
                 if (inputGui != null && inputGui.isAddAction(e)) {
-                    if (inputGui.hasValidDataset()) {
+                    if (inputGui.hasValidDataset(currentPerson.getStData().get(currentPerson.getStData().size() - 1).getX().intValue())) {
                         XYDataItem dataItem = inputGui.getDataItem();
                         currentPerson.addStData(dataItem, stGraph);
                         inputGui.Exit();
@@ -60,13 +61,13 @@ public class Main{
                         float time;
                         float distance;
 
-                        if (currentPerson.getStData().size() == 1) {
+                        if (currentPerson.getStData().size() == 2) {
                             lastValue += 1;
                         }
 
                         XYDataItem laststdata = currentPerson.getStData().get(lastValue);
 
-                        if (currentPerson.getStData().size() == 1) {
+                        if (currentPerson.getStData().size() == 2) {
                             distance = dataItem.getY().floatValue();
                             time = dataItem.getX().floatValue();
                         } else {
@@ -78,7 +79,7 @@ public class Main{
                                 distance = -(laststdata.getX().floatValue() - dataItem.getX().floatValue());
                             }
                         }
-                        currentPerson.getVtData().add(new XYDataItem(dataItem.getY(), distance / time));
+                        currentPerson.getVtData().add(new XYDataItem(dataItem.getX(), distance / time));
                     } else {
                         inputGui.markInputInvalid();
                     }
@@ -87,6 +88,7 @@ public class Main{
                 if (newPersonGui != null && newPersonGui.isAddAction(e)) {
                     allpersons.add(new Person());
                     int current = allpersons.size() - 1;
+                    allpersons.get(current).addStDatawithoutGraph(new XYDataItem(0, 0));
                     allpersons.get(current).setLineNumber(current);
                     allpersons.get(current).setColor(newPersonGui.getColor());
                     newPersonGui.close();

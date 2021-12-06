@@ -19,9 +19,17 @@ public class Person {
         return vtdata;
     }
 
+    public XYDataItem getVtData(int which){
+        return vtdata.get(which);
+    }
+
     public void addStData(XYDataItem dataitem, GraphGui graphGui){
         stdata.add(dataitem);
         graphGui.addDataset(dataitem, LineNumber);
+    }
+
+    public void addStDatawithoutGraph(XYDataItem dataitem){
+        stdata.add(dataitem);
     }
 
     public void setLineNumber(int Number){
