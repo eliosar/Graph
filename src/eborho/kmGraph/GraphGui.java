@@ -22,27 +22,34 @@ public class GraphGui {
     private static final int WIDTH = 640;
     private static final int HEIGHT = 480;
 
-    private XYSeriesCollection dataset = new XYSeriesCollection();
+    private final XYSeriesCollection dataset = new XYSeriesCollection();
 
-    private ArrayList<XYSeries> Lines = new ArrayList<>();
-
-    private ArrayList<Person> allpersons = new ArrayList<>();
+    private final ArrayList<XYSeries> Lines = new ArrayList<>();
+    private final ArrayList<JButton> allButtons = new ArrayList<>();
 
     private final JFrame frame = new JFrame();
     private final JButton addButton = new JButton("add");
     private final JButton finishButton = new JButton("finish");
     private final JButton addPersonButton = new JButton("add Person");
+    private final JButton choosepersonsButton = new JButton("all Persons");
     private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
     public GraphGui() {
+        allButtons.add(addButton);
+        allButtons.add(finishButton);
+        allButtons.add(addPersonButton);
+        allButtons.add(choosepersonsButton);
+
         Lines.add(new XYSeries("line", false));
         addButton.setBounds(10, 415, 90, 20);
         finishButton.setBounds(110, 415, 90, 20);
         addPersonButton.setBounds( 210, 415, 100, 20);
+        choosepersonsButton.setBounds(10, 10, 100, 20);
         JPanel chartPanel = createChartPanel();
         frame.add(addButton);
         frame.add(finishButton);
         frame.add(addPersonButton);
+        frame.add(choosepersonsButton);
         frame.add(chartPanel, BorderLayout.CENTER);
 
         frame.setSize(WIDTH, HEIGHT);
@@ -88,9 +95,21 @@ public class GraphGui {
     }
 
     public void closeButtons(){
-        addButton.setVisible(false);
-        finishButton.setVisible(false);
-        addPersonButton.setVisible(false);
+        for(JButton currentButton : allButtons) {
+            currentButton.setVisible(false);
+        }
+    }
+
+    public void disableButtons(){
+        for(JButton currentButton : allButtons) {
+            currentButton.setEnabled(false);
+        }
+    }
+
+    public void enableButtons(){
+        for(JButton currentButton : allButtons) {
+            currentButton.setEnabled(true);
+        }
     }
 
     public void addDataset(XYDataItem dataItem, int LineNumber) {
@@ -105,9 +124,9 @@ public class GraphGui {
     }
 
     void setActionListener(ActionListener al) {
-        addButton.addActionListener(al);
-        finishButton.addActionListener(al);
-        addPersonButton.addActionListener(al);
+        for(JButton currentButton : allButtons) {
+            currentButton.addActionListener(al);
+        }
     }
 
     void setLocation(Point location){
@@ -127,8 +146,7 @@ public class GraphGui {
     public boolean isAddPersonAction(ActionEvent e) {
         return e.getSource().equals(addPersonButton);
     }
-
-    public void setPersons(ArrayList<Person> persons){
-        allpersons = persons;
+    public boolean ischoosePersonAction(ActionEvent e) {
+        return e.getSource().equals(choosepersonsButton);
     }
 }

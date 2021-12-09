@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class Person {
     private Color color;
-    private int LineNumber = 0;
-    private ArrayList<XYDataItem> stdata = new ArrayList<>();
-    private ArrayList<XYDataItem> vtdata = new ArrayList<>();
+    private int LineNumber;
+    private final ArrayList<XYDataItem> stdata = new ArrayList<>();
+    private final ArrayList<XYDataItem> vtdata = new ArrayList<>();
 
     public ArrayList<XYDataItem> getStData(){
         return stdata;
