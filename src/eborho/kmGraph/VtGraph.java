@@ -16,26 +16,18 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class VtGraph {
-    private ArrayList<XYDataItem> Alldatas = new ArrayList<>();
-    private ArrayList<Person> allpersons;
-    private int width = 640;
-    private int height = 480;
-    private JFreeChart chart;
+    private final ArrayList<Line> alllines;
+
+    int width = 640;
+    int height = 480;
 
     public JFrame frame = new JFrame();
 
-    public VtGraph(ArrayList<Person> allpersons){
-        this.allpersons = allpersons;
-
-        for(int i = 0; i < allpersons.size(); i++){
-            for (int x = 0; x < allpersons.get(i).getVtData().size(); x++) {
-                Alldatas.add(allpersons.get(i).getVtData().get(x));
-            }
-        }
+    public VtGraph(ArrayList<Line> alllines){
+        this.alllines = alllines;
 
         JPanel chartPanel = createChartPanel();
         frame.add(chartPanel, BorderLayout.CENTER);
-
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -43,7 +35,7 @@ public class VtGraph {
     private JPanel createChartPanel(){
         XYDataset dataset = createDataset();
 
-        chart = ChartFactory.createXYLineChart("vt Graph", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
+        JFreeChart chart = ChartFactory.createXYLineChart("vt Graph", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
@@ -51,9 +43,9 @@ public class VtGraph {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
         int currentSeries = 0;
-        for(int i = 0; i < allpersons.size(); i++) {
-            for (int x = 0; x < allpersons.get(i).getVtData().size(); x++) {
-                renderer.setSeriesPaint(currentSeries, allpersons.get(i).getColor());
+        for (Line allline : alllines) {
+            for (int x = 0; x < allline.getVtData().size(); x++) {
+                renderer.setSeriesPaint(currentSeries, allline.getColor());
                 currentSeries += 1;
             }
         }
@@ -74,16 +66,16 @@ public class VtGraph {
     private XYDataset createDataset(){
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        for(int i = 0; i < allpersons.size(); i++) {
+        for(int i = 0; i < alllines.size(); i++) {
 
-            for(int x = 0; x < allpersons.get(i).getVtData().size(); x++) {
+            for(int x = 0; x < alllines.get(i).getVtData().size(); x++) {
                 XYSeries Line = new XYSeries(i + " " + x, false);
-                XYDataItem currentvtdata = allpersons.get(i).getVtData(x);
+                XYDataItem currentvtdata = alllines.get(i).getVtData(x);
 
                 if (x == 0) {
                     Line.add(currentvtdata.getYValue(), 0);
                 } else {
-                    Line.add(currentvtdata.getYValue(), allpersons.get(i).getVtData(x - 1).getXValue());
+                    Line.add(currentvtdata.getYValue(), alllines.get(i).getVtData(x - 1).getXValue());
                 }
 
                 Line.add(currentvtdata.getYValue(), currentvtdata.getXValue());

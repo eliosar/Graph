@@ -5,46 +5,49 @@ import org.jfree.data.xy.XYDataItem;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Person {
+public class Line {
     private Color color;
-    private int LineNumber;
+    private int Number;
+    private String Name;
     private final ArrayList<XYDataItem> stdata = new ArrayList<>();
     private final ArrayList<XYDataItem> vtdata = new ArrayList<>();
 
     public ArrayList<XYDataItem> getStData(){
         return stdata;
     }
-
-    public ArrayList<XYDataItem> getVtData(){
-        return vtdata;
-    }
-
-    public XYDataItem getVtData(int which){
-        return vtdata.get(which);
-    }
-
     public void addStData(XYDataItem dataitem, GraphGui graphGui){
         stdata.add(dataitem);
-        graphGui.addDataset(dataitem, LineNumber);
+        graphGui.addDataset(dataitem, Number);
     }
-
     public void addStDatawithoutGraph(XYDataItem dataitem){
         stdata.add(dataitem);
     }
 
-    public void setLineNumber(int Number){
-        LineNumber = Number;
+    public ArrayList<XYDataItem> getVtData(){
+        return vtdata;
+    }
+    public XYDataItem getVtData(int which){
+        return vtdata.get(which);
     }
 
-    public int getLineNumber(){
-        return LineNumber;
+    public void setNumber(int Number){
+        this.Number = Number;
+    }
+    public int getNumber(){
+        return Number;
     }
 
     public void setColor(Color newColor){
         color = newColor;
     }
-
     public Color getColor(){
         return color;
+    }
+
+    public void setName(String Name){
+        this.Name = Name;
+    }
+    public String getName(){
+        return Name;
     }
 }

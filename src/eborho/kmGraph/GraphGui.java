@@ -30,26 +30,26 @@ public class GraphGui {
     private final JFrame frame = new JFrame();
     private final JButton addButton = new JButton("add");
     private final JButton finishButton = new JButton("finish");
-    private final JButton addPersonButton = new JButton("add Person");
-    private final JButton choosepersonsButton = new JButton("all Persons");
+    private final JButton addLineButton = new JButton("add Lines");
+    private final JButton chooselineButton = new JButton("all Lines");
     private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
     public GraphGui() {
         allButtons.add(addButton);
         allButtons.add(finishButton);
-        allButtons.add(addPersonButton);
-        allButtons.add(choosepersonsButton);
+        allButtons.add(addLineButton);
+        allButtons.add(chooselineButton);
 
         Lines.add(new XYSeries("line", false));
         addButton.setBounds(10, 415, 90, 20);
         finishButton.setBounds(110, 415, 90, 20);
-        addPersonButton.setBounds( 210, 415, 100, 20);
-        choosepersonsButton.setBounds(10, 10, 100, 20);
+        addLineButton.setBounds( 210, 415, 100, 20);
+        chooselineButton.setBounds(10, 10, 100, 20);
         JPanel chartPanel = createChartPanel();
         frame.add(addButton);
         frame.add(finishButton);
-        frame.add(addPersonButton);
-        frame.add(choosepersonsButton);
+        frame.add(addLineButton);
+        frame.add(chooselineButton);
         frame.add(chartPanel, BorderLayout.CENTER);
 
         frame.setSize(WIDTH, HEIGHT);
@@ -116,11 +116,11 @@ public class GraphGui {
         Lines.get(LineNumber).add(dataItem);
     }
 
-    public void addLine(Person newPerson){
-        Lines.add(new XYSeries(newPerson.getLineNumber(), false));
+    public void addLine(Line newLine){
+        Lines.add(new XYSeries(newLine.getNumber(), false));
         Lines.get(Lines.size() - 1).add(0,0);
         dataset.addSeries(Lines.get(Lines.size() - 1));
-        renderer.setSeriesPaint(newPerson.getLineNumber(), newPerson.getColor());
+        renderer.setSeriesPaint(newLine.getNumber(), newLine.getColor());
     }
 
     void setActionListener(ActionListener al) {
@@ -143,10 +143,10 @@ public class GraphGui {
     public boolean isfinishAction(ActionEvent e) {
         return e.getSource().equals(finishButton);
     }
-    public boolean isAddPersonAction(ActionEvent e) {
-        return e.getSource().equals(addPersonButton);
+    public boolean isAddLineAction(ActionEvent e) {
+        return e.getSource().equals(addLineButton);
     }
-    public boolean ischoosePersonAction(ActionEvent e) {
-        return e.getSource().equals(choosepersonsButton);
+    public boolean ischooseLineAction(ActionEvent e) {
+        return e.getSource().equals(chooselineButton);
     }
 }
