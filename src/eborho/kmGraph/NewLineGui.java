@@ -16,8 +16,8 @@ public class NewLineGui {
     private final JFrame frame = new JFrame();
 
     public NewLineGui(){
-        JButton colorButton = new JButton("choose Color");
-        JButton nameButton = new JButton("choose Name");
+        JButton colorButton = new JButton("Color");
+        JButton nameButton = new JButton("Name");
         generalActionListener action = new generalActionListener(colorButton, nameButton);
 
         colorButton.setBounds(10, 20, 122, 25);

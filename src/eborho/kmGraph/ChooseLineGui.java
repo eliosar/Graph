@@ -12,7 +12,7 @@ public class ChooseLineGui {
     private final JFrame frame = new JFrame();
     private Line choosedLine;
     private final ArrayList<Integer> allNumbers = new ArrayList<>();
-
+    private final JButton addLine = new JButton("add");
     private final ArrayList<JButton> allLinesButtons = new ArrayList<>();
     private final ArrayList<Line> allLines;
 
@@ -32,6 +32,9 @@ public class ChooseLineGui {
             panel.add(newLineButton);
         }
 
+        addLine.setSize(30, 40);
+        panel.add(addLine);
+
         frame.setSize(350, 200);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -42,6 +45,7 @@ public class ChooseLineGui {
         for(JButton currentLine : allLinesButtons){
             currentLine.addActionListener(al);
         }
+        addLine.addActionListener(al);
     }
 
     public boolean ischooseLine(ActionEvent e){
@@ -63,6 +67,10 @@ public class ChooseLineGui {
             }
         }
         return is;
+    }
+
+    public boolean isAddAction(ActionEvent e){
+        return e.getSource().equals(addLine);
     }
 
     public Line getchoosedLine(){

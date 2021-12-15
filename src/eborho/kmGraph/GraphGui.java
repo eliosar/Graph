@@ -28,28 +28,32 @@ public class GraphGui {
     private final ArrayList<JButton> allButtons = new ArrayList<>();
 
     private final JFrame frame = new JFrame();
+
     private final JButton addButton = new JButton("add");
     private final JButton finishButton = new JButton("finish");
-    private final JButton addLineButton = new JButton("add Lines");
     private final JButton chooselineButton = new JButton("all Lines");
+
+    private final JLabel currentLine = new JLabel();
+
     private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
     public GraphGui() {
         allButtons.add(addButton);
         allButtons.add(finishButton);
-        allButtons.add(addLineButton);
         allButtons.add(chooselineButton);
 
         Lines.add(new XYSeries("line", false));
         addButton.setBounds(10, 415, 90, 20);
         finishButton.setBounds(110, 415, 90, 20);
-        addLineButton.setBounds( 210, 415, 100, 20);
         chooselineButton.setBounds(10, 10, 100, 20);
+        currentLine.setBounds(210, 415, 90, 20);
+        currentLine.setText("current Line: ");
+        currentLine.setForeground(Color.WHITE);
         JPanel chartPanel = createChartPanel();
         frame.add(addButton);
         frame.add(finishButton);
-        frame.add(addLineButton);
         frame.add(chooselineButton);
+        frame.add(currentLine);
         frame.add(chartPanel, BorderLayout.CENTER);
 
         frame.setSize(WIDTH, HEIGHT);
@@ -89,7 +93,6 @@ public class GraphGui {
     public void show() {
         frame.setVisible(true);
     }
-
     public void close() {
         frame.dispose();
     }
@@ -137,14 +140,15 @@ public class GraphGui {
         }
     }
 
+    public void setCurrentLine(Line currentLine){
+        this.currentLine.setText("current Line: " + currentLine.getName());
+    }
+
     public boolean isAddAction(ActionEvent e) {
         return e.getSource().equals(addButton);
     }
     public boolean isfinishAction(ActionEvent e) {
         return e.getSource().equals(finishButton);
-    }
-    public boolean isAddLineAction(ActionEvent e) {
-        return e.getSource().equals(addLineButton);
     }
     public boolean ischooseLineAction(ActionEvent e) {
         return e.getSource().equals(chooselineButton);
