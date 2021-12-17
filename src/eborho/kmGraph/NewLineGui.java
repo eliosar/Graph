@@ -8,17 +8,15 @@ import java.awt.event.ActionListener;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class NewLineGui {
-
-    private static Color color;
-    private static String Name;
-
     private final JButton finishButton = new JButton("finish");
     private final JFrame frame = new JFrame();
+    private final generalActionListener action;
 
     public NewLineGui(){
         JButton colorButton = new JButton("Color");
         JButton nameButton = new JButton("Name");
-        generalActionListener action = new generalActionListener(colorButton, nameButton);
+
+        action = new generalActionListener(colorButton, nameButton);
 
         colorButton.setBounds(10, 20, 122, 25);
         colorButton.addActionListener(action);
@@ -50,11 +48,17 @@ public class NewLineGui {
     }
 
     public Color getColor(){
-        return color;
+        return action.color;
+    }
+    public void setColor(Color color){
+        action.color = color;
     }
 
     public String getName(){
-        return Name;
+        return action.Name;
+    }
+    public void setName(String Name){
+        action.Name = Name;
     }
 
     public void show(){
@@ -72,6 +76,8 @@ public class NewLineGui {
         private final JButton NameAddButton = new JButton();
         private final JTextField NameField = new JTextField();
         private final JFrame Nameframe = new JFrame();
+        private Color color;
+        private String Name;
 
         generalActionListener(JButton ColorButton, JButton NameButton){
             this.ColorButton = ColorButton;
@@ -82,16 +88,14 @@ public class NewLineGui {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource().equals(ColorButton)){
-                color = JColorChooser.showDialog(null, "Color choose", null);
-            }
-
             if(e.getSource().equals(NameButton)){
                 JLabel NameText = new JLabel("Name");
 
                 NameText.setBounds(10, 20, 160, 25);
                 NameField.setBounds(110, 20, 80, 25);
                 NameAddButton.setBounds(30, 60, 122, 25);
+
+                NameField.setText(Name);
 
                 JPanel panel = new JPanel();
                 panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -106,6 +110,10 @@ public class NewLineGui {
                 Nameframe.add(NameAddButton);
                 Nameframe.add(panel);
                 Nameframe.setVisible(true);
+            }
+
+            if(e.getSource().equals(ColorButton)){
+                color = JColorChooser.showDialog(null, "Color choose", null);
             }
 
             if(e.getSource().equals(NameAddButton)){

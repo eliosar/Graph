@@ -21,15 +21,15 @@ public class VtGraph {
     int width = 640;
     int height = 480;
 
-    public JFrame frame = new JFrame();
+    private final JFrame frame = new JFrame();
 
     public VtGraph(ArrayList<Line> alllines){
         this.alllines = alllines;
 
         JPanel chartPanel = createChartPanel();
-        frame.add(chartPanel, BorderLayout.CENTER);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(chartPanel, BorderLayout.CENTER);
     }
 
     private JPanel createChartPanel(){

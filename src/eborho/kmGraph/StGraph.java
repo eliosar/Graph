@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class GraphGui {
+public class StGraph {
 
     private static final int WIDTH = 640;
     private static final int HEIGHT = 480;
@@ -37,7 +37,7 @@ public class GraphGui {
 
     private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-    public GraphGui() {
+    public StGraph() {
         allButtons.add(addButton);
         allButtons.add(finishButton);
         allButtons.add(chooselineButton);
@@ -46,18 +46,18 @@ public class GraphGui {
         addButton.setBounds(10, 415, 90, 20);
         finishButton.setBounds(110, 415, 90, 20);
         chooselineButton.setBounds(10, 10, 100, 20);
-        currentLine.setBounds(210, 415, 90, 20);
+        currentLine.setBounds(210, 415, 120, 20);
         currentLine.setText("current Line: ");
         currentLine.setForeground(Color.WHITE);
         JPanel chartPanel = createChartPanel();
+
+        frame.setSize(WIDTH, HEIGHT);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(addButton);
         frame.add(finishButton);
         frame.add(chooselineButton);
         frame.add(currentLine);
         frame.add(chartPanel, BorderLayout.CENTER);
-
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private JPanel createChartPanel() {

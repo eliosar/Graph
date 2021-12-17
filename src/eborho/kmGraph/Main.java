@@ -21,13 +21,13 @@ public class Main{
         newLine.setNumber(0);
         newLine.setName(" ");
         newLine.addStDatawithoutGraph(new XYDataItem(0, 0));
-        GraphGui graphGui = new GraphGui();
-        graphGui.setLocation(null);
+        StGraph stGraph = new StGraph();
+        stGraph.setLocation(null);
 
-        al = new generalActionListener(graphGui, newLine);
+        al = new generalActionListener(stGraph, newLine);
 
-        graphGui.setActionListener(al);
-        graphGui.show();
+        stGraph.setActionListener(al);
+        stGraph.show();
     }
 
     //TODO maybe extract to separate class
@@ -40,10 +40,10 @@ public class Main{
         private Line currentLine;
         private Line choosedLine;
         private ChooseOrChangeGui chooseOrChangeGui = null;
-        private final GraphGui stGraph;
+        private final StGraph stGraph;
         private final ArrayList<Line> allLines = new ArrayList<>();
 
-        public generalActionListener(GraphGui stGraph, Line line) {
+        public generalActionListener(StGraph stGraph, Line line) {
             this.stGraph = stGraph;
             allLines.add(line);
             currentLine = line;
@@ -53,6 +53,7 @@ public class Main{
         public void actionPerformed(ActionEvent e) {
             // new Data
             if (inputGui != null && inputGui.isAddAction(e)) {
+                // if entered Data is correct
                 if (inputGui.hasValidDataset(currentLine.getStData().get(currentLine.getStData().size() - 1).getX().intValue())) {
                     XYDataItem dataItem = inputGui.getDataItem();
                     currentLine.addStData(dataItem, stGraph);
@@ -82,7 +83,7 @@ public class Main{
                         }
                     }
                     currentLine.getVtData().add(new XYDataItem(dataItem.getX(), distance / time));
-                } else {
+                } else { // if entered input is not correct
                     inputGui.markInputInvalid();
                 }
             }
@@ -125,6 +126,8 @@ public class Main{
                 newLineGui = new NewLineGui();
                 newLineGui.setActionListener(al);
                 newLineGui.show();
+                newLineGui.setName(choosedLine.getName());
+                newLineGui.setColor(choosedLine.getColor());
                 chooseOrChangeGui.close();
             }
 
