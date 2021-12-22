@@ -84,7 +84,12 @@ public class Main{
                     }
                     currentLine.getVtData().add(new XYDataItem(dataItem.getX(), distance / time));
                 } else { // if entered input is not correct
-                    inputGui.markInputInvalid();
+                    if(inputGui.hasEmptyDataset()){
+                        inputGui.close();
+                        stGraph.enableButtons();
+                    }else {
+                        inputGui.markInputInvalid();
+                    }
                 }
             }
 
@@ -128,6 +133,14 @@ public class Main{
                 newLineGui.show();
                 newLineGui.setName(choosedLine.getName());
                 newLineGui.setColor(choosedLine.getColor());
+                chooseOrChangeGui.close();
+            }
+
+            if(chooseOrChangeGui != null && chooseOrChangeGui.isDeleteAction(e)){
+                stGraph.enableButtons();
+                stGraph.removeLine(currentLine.getNumber());
+                allLines.remove(allLines.size() - 1);
+                setcurrentLine(allLines.get(allLines.size() - 1));
                 chooseOrChangeGui.close();
             }
 

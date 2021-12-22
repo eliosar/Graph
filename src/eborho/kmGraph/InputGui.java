@@ -76,6 +76,10 @@ public class InputGui {
         return false;
     }
 
+    public boolean hasEmptyDataset(){
+        return kmAmount.getText().isEmpty() && timeAmount.getText().isEmpty();
+    }
+
     public XYDataItem getDataItem() {
         float km = Float.parseFloat(kmAmount.getText());
         float time = Float.parseFloat(timeAmount.getText());

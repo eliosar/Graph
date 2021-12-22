@@ -11,6 +11,7 @@ public class ChooseOrChangeGui {
 
     private final JButton chooseButton = new JButton("choose");
     private final JButton changeButton = new JButton("change");
+    private final JButton deleteButton = new JButton("delete");
 
     private final JFrame frame = new JFrame();
 
@@ -19,6 +20,7 @@ public class ChooseOrChangeGui {
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.add(chooseButton);
         panel.add(changeButton);
+        panel.add(deleteButton);
         panel.setBackground(Color.GRAY);
 
         frame.setSize(350, 200);
@@ -30,13 +32,17 @@ public class ChooseOrChangeGui {
     public void setActionListener(ActionListener al){
         changeButton.addActionListener(al);
         chooseButton.addActionListener(al);
+        deleteButton.addActionListener(al);
     }
 
     public boolean isChooseAction(ActionEvent e){
         return e.getSource().equals(chooseButton);
     }
     public boolean isChangeAction(ActionEvent e){
-        return  e.getSource().equals(changeButton);
+        return e.getSource().equals(changeButton);
+    }
+    public boolean isDeleteAction(ActionEvent e){
+        return e.getSource().equals(deleteButton);
     }
 
     public void show(){

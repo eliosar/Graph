@@ -126,6 +126,11 @@ public class StGraph {
         renderer.setSeriesPaint(newLine.getNumber(), newLine.getColor());
     }
 
+    public void removeLine(int Number){
+        Lines.remove(Number);
+        dataset.removeSeries(Number);
+    }
+
     void setActionListener(ActionListener al) {
         for(JButton currentButton : allButtons) {
             currentButton.addActionListener(al);
