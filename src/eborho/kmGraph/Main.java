@@ -21,30 +21,33 @@ public class Main{
         newLine.setNumber(0);
         newLine.setName(" ");
         newLine.addStDatawithoutGraph(new XYDataItem(0, 0));
-        StGraph stGraph = new StGraph();
-        stGraph.setLocation(null);
+        Graph graph = new Graph();
+        graph.setLocation(null);
 
-        al = new generalActionListener(stGraph, newLine);
+        al = new generalActionListener(graph, newLine);
 
-        stGraph.setActionListener(al);
-        stGraph.show();
+        graph.setActionListener(al);
+        graph.show();
     }
 
     //TODO maybe extract to separate class
     private static class generalActionListener implements ActionListener {
 
+        private String xUnit = "h";
+        private String yUnit = "km";
         private InputGui inputGui = null;
         private NewLineGui newLineGui = null;
         private ChooseLineGui chooseLineGui = null;
+        private ChangeUnitGui changeUnitGui = null;
         private boolean ischangingLine = false;
         private Line currentLine;
         private Line choosedLine;
         private ChooseOrChangeGui chooseOrChangeGui = null;
-        private final StGraph stGraph;
+        private final Graph graph;
         private final ArrayList<Line> allLines = new ArrayList<>();
 
-        public generalActionListener(StGraph stGraph, Line line) {
-            this.stGraph = stGraph;
+        public generalActionListener(Graph graph, Line line) {
+            this.graph = graph;
             allLines.add(line);
             currentLine = line;
         }
@@ -56,9 +59,9 @@ public class Main{
                 // if entered Data is correct
                 if (inputGui.hasValidDataset(currentLine.getStData().get(currentLine.getStData().size() - 1).getX().intValue())) {
                     XYDataItem dataItem = inputGui.getDataItem();
-                    currentLine.addStData(dataItem, stGraph);
+                    currentLine.addStData(dataItem, graph);
                     inputGui.Exit();
-                    stGraph.enableButtons();
+                    graph.enableButtons();
 
                     int lastValue = currentLine.getStData().size() - 2;
                     float time;
@@ -86,7 +89,7 @@ public class Main{
                 } else { // if entered input is not correct
                     if(inputGui.hasEmptyDataset()){
                         inputGui.close();
-                        stGraph.enableButtons();
+                        graph.enableButtons();
                     }else {
                         inputGui.markInputInvalid();
                     }
@@ -110,17 +113,17 @@ public class Main{
                     choosedLine.addStDatawithoutGraph(new XYDataItem(0, 0));
                     choosedLine.setNumber(allLines.size());
                     allLines.add(choosedLine);
-                    stGraph.addLine(choosedLine);
+                    graph.addLine(choosedLine);
                 }
                 setcurrentLine(choosedLine);
 
                 newLineGui.close();
-                stGraph.enableButtons();
+                graph.enableButtons();
             }
 
             // selected Line = current Line
             if(chooseOrChangeGui != null && chooseOrChangeGui.isChooseAction(e)){
-                stGraph.enableButtons();
+                graph.enableButtons();
                 setcurrentLine(choosedLine);
                 chooseOrChangeGui.close();
             }
@@ -136,9 +139,10 @@ public class Main{
                 chooseOrChangeGui.close();
             }
 
+            // deleting choosed Line
             if(chooseOrChangeGui != null && chooseOrChangeGui.isDeleteAction(e)){
-                stGraph.enableButtons();
-                stGraph.removeLine(currentLine.getNumber());
+                graph.enableButtons();
+                graph.removeLine(currentLine.getNumber());
                 allLines.remove(allLines.size() - 1);
                 setcurrentLine(allLines.get(allLines.size() - 1));
                 chooseOrChangeGui.close();
@@ -155,7 +159,7 @@ public class Main{
             }
 
             // selecting Line
-            if(chooseLineGui != null && chooseLineGui.ischooseLine(e)){
+            if(chooseLineGui != null && chooseLineGui.isChooseLineAction(e)){
                 choosedLine = chooseLineGui.getchoosedLine();
                 chooseLineGui.close();
 
@@ -164,36 +168,56 @@ public class Main{
                 chooseOrChangeGui.show();
             }
 
+            if(changeUnitGui != null && changeUnitGui.isChangeAction(e)){
+                if(changeUnitGui.hasValidInput()) {
+                    xUnit = changeUnitGui.getXUnit();
+                    yUnit = changeUnitGui.getYUnit();
+                    changeUnitGui.close();
+                    graph.enableButtons();
+                    graph.changeUnit(xUnit, yUnit);
+                }else{
+                    changeUnitGui.markInputInvalid();
+                }
+            }
+
+            // changing Units
+            if(graph.isChangeUnitsAction(e)){
+                changeUnitGui = new ChangeUnitGui(xUnit, yUnit);
+                changeUnitGui.setListener(al);
+                changeUnitGui.show();
+                graph.disableButtons();
+            }
+
             // choose Line Gui
-            if(stGraph.ischooseLineAction(e)){
+            if(graph.isChooseLineAction(e)){
                 chooseLineGui = new ChooseLineGui(allLines);
                 chooseLineGui.setActionListener(al);
                 chooseLineGui.show();
-                stGraph.disableButtons();
+                graph.disableButtons();
             }
 
             // Data gui
-            if (stGraph.isAddAction(e)) {
-                inputGui = new InputGui();
+            if (graph.isAddAction(e)) {
+                inputGui = new InputGui(xUnit, yUnit);
                 inputGui.setActionListener(al);
                 inputGui.show();
-                stGraph.disableButtons();
+                graph.disableButtons();
             }
 
             // finished
-            if (stGraph.isfinishAction(e)) {
-                stGraph.setLocation(new Point(999, 280));
-                stGraph.closeButtons();
+            if (graph.isFinishAction(e)) {
+                graph.setLocation(new Point(999, 280));
+                graph.closeButtons();
 
-                VtGraph vtGraph = new VtGraph(allLines);
-                vtGraph.setLocation(new Point(333, 280));
-                vtGraph.show();
+                AverageGraph averageGraph = new AverageGraph(allLines, xUnit, yUnit);
+                averageGraph.setLocation(new Point(333, 280));
+                averageGraph.show();
             }
         }
 
         private void setcurrentLine(Line currentLine){
             this.currentLine = currentLine;
-            stGraph.setCurrentLine(currentLine);
+            graph.setCurrentLine(currentLine);
         }
     }
 }

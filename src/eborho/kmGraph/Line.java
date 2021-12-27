@@ -15,9 +15,9 @@ public class Line {
     public ArrayList<XYDataItem> getStData(){
         return stdata;
     }
-    public void addStData(XYDataItem dataitem, StGraph stGraph){
+    public void addStData(XYDataItem dataitem, Graph graph){
         stdata.add(dataitem);
-        stGraph.addDataset(dataitem, Number);
+        graph.addDataset(dataitem, Number);
     }
     public void addStDatawithoutGraph(XYDataItem dataitem){
         stdata.add(dataitem);

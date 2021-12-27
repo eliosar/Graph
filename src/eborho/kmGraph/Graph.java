@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class StGraph {
+public class Graph {
 
     private static final int WIDTH = 640;
     private static final int HEIGHT = 480;
@@ -32,20 +32,25 @@ public class StGraph {
     private final JButton addButton = new JButton("add");
     private final JButton finishButton = new JButton("finish");
     private final JButton chooselineButton = new JButton("all Lines");
+    private final JButton changeUnitsButton = new JButton("change Units");
 
     private final JLabel currentLine = new JLabel();
 
     private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-    public StGraph() {
+    private JFreeChart chart;
+
+    public Graph() {
         allButtons.add(addButton);
         allButtons.add(finishButton);
         allButtons.add(chooselineButton);
+        allButtons.add(changeUnitsButton);
 
         Lines.add(new XYSeries("line", false));
         addButton.setBounds(10, 415, 90, 20);
         finishButton.setBounds(110, 415, 90, 20);
         chooselineButton.setBounds(10, 10, 100, 20);
+        changeUnitsButton.setBounds(120, 10, 110, 20);
         currentLine.setBounds(210, 415, 120, 20);
         currentLine.setText("current Line: ");
         currentLine.setForeground(Color.WHITE);
@@ -57,13 +62,14 @@ public class StGraph {
         frame.add(finishButton);
         frame.add(chooselineButton);
         frame.add(currentLine);
+        frame.add(changeUnitsButton);
         frame.add(chartPanel, BorderLayout.CENTER);
     }
 
     private JPanel createChartPanel() {
         XYDataset dataset = createDataset();
 
-        JFreeChart chart = ChartFactory.createXYLineChart("stGraph", "time [h]", "distance [km]", dataset, PlotOrientation.VERTICAL, false, true, true);
+        chart = ChartFactory.createXYLineChart("Graph", "h", "km", dataset, PlotOrientation.VERTICAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
@@ -82,6 +88,11 @@ public class StGraph {
         plot.setDomainGridlinePaint(Color.BLACK);
 
         return new ChartPanel(chart);
+    }
+
+    public void changeUnit(String xUnit, String yUnit){
+        chart.getXYPlot().getDomainAxis().setAttributedLabel(xUnit);
+        chart.getXYPlot().getRangeAxis().setAttributedLabel(yUnit);
     }
 
     private XYDataset createDataset() {
@@ -152,10 +163,13 @@ public class StGraph {
     public boolean isAddAction(ActionEvent e) {
         return e.getSource().equals(addButton);
     }
-    public boolean isfinishAction(ActionEvent e) {
+    public boolean isFinishAction(ActionEvent e) {
         return e.getSource().equals(finishButton);
     }
-    public boolean ischooseLineAction(ActionEvent e) {
+    public boolean isChooseLineAction(ActionEvent e) {
         return e.getSource().equals(chooselineButton);
+    }
+    public boolean isChangeUnitsAction(ActionEvent e){
+        return e.getSource().equals(changeUnitsButton);
     }
 }

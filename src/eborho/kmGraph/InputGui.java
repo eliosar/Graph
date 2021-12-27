@@ -18,13 +18,13 @@ public class InputGui {
 
     public final JButton addButton = new JButton("add");
 
-    public InputGui() {
+    public InputGui(String xUnit, String yUnit) {
         kmAmount.setBounds(110, 20, 80, 25);
-        JLabel kmText = new JLabel("km");
+        JLabel kmText = new JLabel(xUnit);
         kmText.setBounds(10, 20, 160, 25);
 
         timeAmount.setBounds(110, 50, 80, 25);
-        JLabel timeText = new JLabel("time spend (h)");
+        JLabel timeText = new JLabel(yUnit);
         timeText.setBounds(10, 50, 160, 25);
 
         JPanel panel = new JPanel();
@@ -87,8 +87,13 @@ public class InputGui {
     }
 
     public void markInputInvalid() {
-        kmAmount.setBackground(Color.RED);
-        timeAmount.setBackground(Color.RED);
+        if(kmAmount.getText().isEmpty()) {
+            kmAmount.setBackground(Color.RED);
+        }
+
+        if(timeAmount.getText().isEmpty()) {
+            timeAmount.setBackground(Color.RED);
+        }
     }
 
     public void Exit(){

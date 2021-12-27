@@ -48,7 +48,7 @@ public class ChooseLineGui {
         addLine.addActionListener(al);
     }
 
-    public boolean ischooseLine(ActionEvent e){
+    public boolean isChooseLineAction(ActionEvent e){
         boolean is = false;
         for (int i = 0; i < allLinesButtons.size(); i++){
             JButton currentLineButton = allLinesButtons.get(i);

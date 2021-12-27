@@ -15,16 +15,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class VtGraph {
+public class AverageGraph {
     private final ArrayList<Line> alllines;
 
     int width = 640;
     int height = 480;
 
     private final JFrame frame = new JFrame();
+    private final String xUnit;
+    private final String yUnit;
 
-    public VtGraph(ArrayList<Line> alllines){
+    public AverageGraph(ArrayList<Line> alllines, String xUnit, String yUnit){
         this.alllines = alllines;
+        this.xUnit = xUnit;
+        this.yUnit = yUnit;
 
         JPanel chartPanel = createChartPanel();
         frame.setSize(width, height);
@@ -35,7 +39,7 @@ public class VtGraph {
     private JPanel createChartPanel(){
         XYDataset dataset = createDataset();
 
-        JFreeChart chart = ChartFactory.createXYLineChart("vt Graph", "average speed [km/h]", "time [h]", dataset, PlotOrientation.HORIZONTAL, false, true, true);
+        JFreeChart chart = ChartFactory.createXYLineChart("average Graph", xUnit, yUnit + "/" + xUnit, dataset, PlotOrientation.VERTICAL, false, true, true);
         chart.setBackgroundPaint(Color.BLACK);
         chart.getTitle().setPaint(Color.CYAN);
 
@@ -73,12 +77,12 @@ public class VtGraph {
                 XYDataItem currentvtdata = alllines.get(i).getVtData(x);
 
                 if (x == 0) {
-                    Line.add(currentvtdata.getYValue(), 0);
+                    Line.add(0, currentvtdata.getYValue());
                 } else {
-                    Line.add(currentvtdata.getYValue(), alllines.get(i).getVtData(x - 1).getXValue());
+                    Line.add(alllines.get(i).getVtData(x - 1).getXValue(), currentvtdata.getYValue());
                 }
 
-                Line.add(currentvtdata.getYValue(), currentvtdata.getXValue());
+                Line.add(currentvtdata.getXValue(), currentvtdata.getYValue());
 
                 dataset.addSeries(Line);
             }
