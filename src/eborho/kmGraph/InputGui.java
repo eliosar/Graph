@@ -11,29 +11,29 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class InputGui {
 
-    private final JTextField kmAmount = new JTextField();
-    private final JTextField timeAmount = new JTextField();
+    private final JTextField xAmount = new JTextField();
+    private final JTextField yAmount = new JTextField();
 
     public final JFrame frame = new JFrame();
 
     public final JButton addButton = new JButton("add");
 
     public InputGui(String xUnit, String yUnit) {
-        kmAmount.setBounds(110, 20, 80, 25);
-        JLabel kmText = new JLabel(xUnit);
-        kmText.setBounds(10, 20, 160, 25);
+        xAmount.setBounds(110, 20, 80, 25);
+        JLabel xText = new JLabel(xUnit);
+        xText.setBounds(10, 20, 160, 25);
 
-        timeAmount.setBounds(110, 50, 80, 25);
-        JLabel timeText = new JLabel(yUnit);
-        timeText.setBounds(10, 50, 160, 25);
+        yAmount.setBounds(110, 50, 80, 25);
+        JLabel yText = new JLabel(yUnit);
+        yText.setBounds(10, 50, 160, 25);
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(null);
-        panel.add(kmAmount);
-        panel.add(kmText);
-        panel.add(timeAmount);
-        panel.add(timeText);
+        panel.add(yAmount);
+        panel.add(yText);
+        panel.add(xAmount);
+        panel.add(xText);
         panel.setBackground(Color.GRAY);
 
         addButton.setBounds(30, 80, 122, 25);
@@ -62,13 +62,13 @@ public class InputGui {
     }
 
     public boolean hasValidDataset(int lastX) {
-        if (!kmAmount.getText().isEmpty() && !timeAmount.getText().isEmpty()) {
+        if (!yAmount.getText().isEmpty() && !xAmount.getText().isEmpty()) {
             try {
-                float km = Float.parseFloat(kmAmount.getText());
-                float time = Float.parseFloat(timeAmount.getText());
+                float x = Float.parseFloat(xAmount.getText());
+                float y = Float.parseFloat(yAmount.getText());
 
                 //valid input if
-                return km >= 0 && time > 0 && time > lastX;
+                return y >= 0 && x > 0 && x > lastX;
             } catch (NumberFormatException e) {
                 return false;
             }
@@ -77,22 +77,40 @@ public class InputGui {
     }
 
     public boolean hasEmptyDataset(){
-        return kmAmount.getText().isEmpty() && timeAmount.getText().isEmpty();
+        return yAmount.getText().isEmpty() && xAmount.getText().isEmpty();
     }
 
     public XYDataItem getDataItem() {
-        float km = Float.parseFloat(kmAmount.getText());
-        float time = Float.parseFloat(timeAmount.getText());
-        return new XYDataItem(time, km);
+        float x = Float.parseFloat(xAmount.getText());
+        float y = Float.parseFloat(yAmount.getText());
+        return new XYDataItem(x, y);
     }
 
-    public void markInputInvalid() {
-        if(kmAmount.getText().isEmpty()) {
-            kmAmount.setBackground(Color.RED);
+    public void markInputInvalid(int lastX) {
+        float y;
+        float x;
+        try{
+            x = Float.parseFloat(xAmount.getText());
+
+            if(x <= lastX){
+                xAmount.setBackground(Color.RED);
+            }else{
+                xAmount.setBackground(Color.WHITE);
+            }
+        }catch (NumberFormatException e){
+            xAmount.setBackground(Color.RED);
         }
 
-        if(timeAmount.getText().isEmpty()) {
-            timeAmount.setBackground(Color.RED);
+        try{
+            y = Float.parseFloat(yAmount.getText());
+
+            if(y < 0){
+                yAmount.setBackground(Color.RED);
+            }else{
+                yAmount.setBackground(Color.WHITE);
+            }
+        }catch (NumberFormatException e){
+            yAmount.setBackground(Color.RED);
         }
     }
 

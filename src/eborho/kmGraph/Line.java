@@ -9,25 +9,25 @@ public class Line {
     private Color color;
     private int Number;
     private String Name;
-    private final ArrayList<XYDataItem> stdata = new ArrayList<>();
-    private final ArrayList<XYDataItem> vtdata = new ArrayList<>();
+    private final ArrayList<XYDataItem> generaldata = new ArrayList<>();
+    private final ArrayList<XYDataItem> averagedata = new ArrayList<>();
 
-    public ArrayList<XYDataItem> getStData(){
-        return stdata;
+    public ArrayList<XYDataItem> getGeneralData(){
+        return generaldata;
     }
     public void addStData(XYDataItem dataitem, Graph graph){
-        stdata.add(dataitem);
+        generaldata.add(dataitem);
         graph.addDataset(dataitem, Number);
     }
-    public void addStDatawithoutGraph(XYDataItem dataitem){
-        stdata.add(dataitem);
+    public void addGeneralDatawithoutGraph(XYDataItem dataitem){
+        generaldata.add(dataitem);
     }
 
-    public ArrayList<XYDataItem> getVtData(){
-        return vtdata;
+    public ArrayList<XYDataItem> getAverageData(){
+        return averagedata;
     }
-    public XYDataItem getVtData(int which){
-        return vtdata.get(which);
+    public XYDataItem getAverageData(int which){
+        return averagedata.get(which);
     }
 
     public void setNumber(int Number){

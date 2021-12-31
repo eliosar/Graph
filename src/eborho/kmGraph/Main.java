@@ -20,7 +20,7 @@ public class Main{
         newLine.setColor(Color.CYAN);
         newLine.setNumber(0);
         newLine.setName(" ");
-        newLine.addStDatawithoutGraph(new XYDataItem(0, 0));
+        newLine.addGeneralDatawithoutGraph(new XYDataItem(0, 0));
         Graph graph = new Graph();
         graph.setLocation(null);
 
@@ -57,41 +57,41 @@ public class Main{
             // new Data
             if (inputGui != null && inputGui.isAddAction(e)) {
                 // if entered Data is correct
-                if (inputGui.hasValidDataset(currentLine.getStData().get(currentLine.getStData().size() - 1).getX().intValue())) {
+                if (inputGui.hasValidDataset(currentLine.getGeneralData().get(currentLine.getGeneralData().size() - 1).getX().intValue())) {
                     XYDataItem dataItem = inputGui.getDataItem();
                     currentLine.addStData(dataItem, graph);
                     inputGui.Exit();
                     graph.enableButtons();
 
-                    int lastValue = currentLine.getStData().size() - 2;
+                    int lastValue = currentLine.getGeneralData().size() - 2;
                     float time;
                     float distance;
 
-                    if (currentLine.getStData().size() == 2) {
+                    if (currentLine.getGeneralData().size() == 2) {
                         lastValue += 1;
                     }
 
-                    XYDataItem laststdata = currentLine.getStData().get(lastValue);
+                    XYDataItem laststdata = currentLine.getGeneralData().get(lastValue);
 
-                    if (currentLine.getStData().size() == 2) {
+                    if (currentLine.getGeneralData().size() == 2) {
                         distance = dataItem.getY().floatValue();
                         time = dataItem.getX().floatValue();
                     } else {
-                        time = dataItem.getY().floatValue() - laststdata.getY().floatValue();
+                        time = dataItem.getX().floatValue() - laststdata.getX().floatValue();
 
-                        if (dataItem.getX().floatValue() > laststdata.getX().floatValue()) {
-                            distance = dataItem.getX().floatValue() - laststdata.getX().floatValue();
+                        if (dataItem.getY().floatValue() > laststdata.getY().floatValue()) {
+                            distance = dataItem.getY().floatValue() - laststdata.getY().floatValue();
                         } else {
-                            distance = -(laststdata.getX().floatValue() - dataItem.getX().floatValue());
+                            distance = -(laststdata.getY().floatValue() - dataItem.getY().floatValue());
                         }
                     }
-                    currentLine.getVtData().add(new XYDataItem(dataItem.getX(), distance / time));
+                    currentLine.getAverageData().add(new XYDataItem(dataItem.getX(), distance / time));
                 } else { // if entered input is not correct
                     if(inputGui.hasEmptyDataset()){
                         inputGui.close();
                         graph.enableButtons();
                     }else {
-                        inputGui.markInputInvalid();
+                        inputGui.markInputInvalid(currentLine.getGeneralData().get(currentLine.getGeneralData().size() - 1).getX().intValue());
                     }
                 }
             }
@@ -110,7 +110,7 @@ public class Main{
                     }
                     ischangingLine = false;
                 }else{
-                    choosedLine.addStDatawithoutGraph(new XYDataItem(0, 0));
+                    choosedLine.addGeneralDatawithoutGraph(new XYDataItem(0, 0));
                     choosedLine.setNumber(allLines.size());
                     allLines.add(choosedLine);
                     graph.addLine(choosedLine);

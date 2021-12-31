@@ -48,7 +48,7 @@ public class AverageGraph {
 
         int currentSeries = 0;
         for (Line allline : alllines) {
-            for (int x = 0; x < allline.getVtData().size(); x++) {
+            for (int x = 0; x < allline.getAverageData().size(); x++) {
                 renderer.setSeriesPaint(currentSeries, allline.getColor());
                 currentSeries += 1;
             }
@@ -72,14 +72,14 @@ public class AverageGraph {
 
         for(int i = 0; i < alllines.size(); i++) {
 
-            for(int x = 0; x < alllines.get(i).getVtData().size(); x++) {
+            for(int x = 0; x < alllines.get(i).getAverageData().size(); x++) {
                 XYSeries Line = new XYSeries(i + " " + x, false);
-                XYDataItem currentvtdata = alllines.get(i).getVtData(x);
+                XYDataItem currentvtdata = alllines.get(i).getAverageData(x);
 
                 if (x == 0) {
                     Line.add(0, currentvtdata.getYValue());
                 } else {
-                    Line.add(alllines.get(i).getVtData(x - 1).getXValue(), currentvtdata.getYValue());
+                    Line.add(alllines.get(i).getAverageData(x - 1).getXValue(), currentvtdata.getYValue());
                 }
 
                 Line.add(currentvtdata.getXValue(), currentvtdata.getYValue());
